@@ -59,15 +59,6 @@ public class UsersResource {
         return false;
     }
 
-    @DELETE
-    public Response removeUser(User user) {
-        if(doesUserExist(user)) {
-            names.remove(user);
-            return Response.ok().build();
-        } else {
-            return Response.status(406).build();
-        }
-    }
 
 
 }
