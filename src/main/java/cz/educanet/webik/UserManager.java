@@ -13,8 +13,8 @@ public class UserManager {
     private static List<User> names = new ArrayList<User>();
 
     @POST
-    public Response createUser(@QueryParam("username") String username, @QueryParam("password") String password) {
-        User tempUser = new User(username,password);
+    public Response createUser(@QueryParam("Email") String email, @QueryParam("First name") String firstname, @QueryParam("Last name") String lastname ,@QueryParam("username") String username, @QueryParam("password") String password) {
+        User tempUser = new User(firstname, lastname ,username,password);
         if(doesUserExist(tempUser)){
             return Response.status(406).build();
         } else {
@@ -43,14 +43,19 @@ public class UserManager {
             return Response.status(406).build();
         }
     }
-
     @GET
         public Response GetCurrentUser(User user){
+        return user;
+
 
     }
 
     @POST
-            public Response LoginUser(User user){
+            public Response LoginUser(@QueryParam("username") String username, @QueryParam("password") String password){
+        if (doesUserExist(user)){
+
+
+        }
 
     }
 }

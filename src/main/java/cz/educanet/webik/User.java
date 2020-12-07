@@ -3,9 +3,16 @@ package cz.educanet.webik;
 public class User {
     private String username;
     private String password;
-    public User(String username, String password) {
+    private String firstname;
+    private String lastname;
+    private String email;
+
+    public User(String email ,String username, String password, String firstname, String lastname) {
         this.username = username;
-        this.password = password;
+        this.password = password
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.email = email;
     }
 
     public String getUsername() {
@@ -22,5 +29,30 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setFirstname(){
+        this.firstname = firstname;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+
+    public void setLastname(){
+        this.lastname = lastname;
+    }
+
+    public String getLastname(){
+        return lastname;
+    }
+
+    public void setEmail(){
+        this.email = email;
+    }
+
+    public String getEmail() {
+        return email;
     }
 }
