@@ -9,10 +9,13 @@ public class User {
 
     public User(String email ,String username, String password, String firstname, String lastname) {
         this.username = username;
-        this.password = password
+        this.password = password;
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
+    }
+
+    public User(String firstname, String lastname, String username, String password) {
     }
 
     public String getUsername() {
@@ -20,6 +23,7 @@ public class User {
     }
 
     public void setUsername(String username) {
+
         this.username = username;
     }
 
@@ -55,4 +59,15 @@ public class User {
     public String getEmail() {
         return email;
     }
+
+    public String changeUsername(String newUsername){
+        return this.username = newUsername;
+
+    }
+
+    public String changePassword(String newPassword){
+        return this.username = newPassword;
+
+    }
 }
+
