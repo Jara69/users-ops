@@ -2,63 +2,62 @@ package cz.educanet.webik;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Path("users")
 @Produces(MediaType.APPLICATION_JSON)
-public class UsersResource {
-    Gson gson = new Gson();
 
-    private static List<User> names = new ArrayList<User>();
+private ArrayList<Users> users = new ArrayList<Users>();
 
-    @GET
-    public Response getAll() {
+@Inject
+private UsersManager userManager;
+@Inject
+private LoginManager loginManager;
 
-        return Response.ok(names).build();
-    }
+@GET
+public Response getUsers() {
+        return Response.ok(userManager).build();
+        }
 
-    @PUT
-    @Path("/{username}")
-    public Response changeUser(@PathParam("username") String username, @QueryParam("username") String changedUsername) {
-        User tempUser = new User(username, "");
-        if(doesUserExist(tempUser)){
-            for(int i = 0; i < names.size(); i++) {
-                if(names.get(i).getUsername().equals(tempUser.getUsername())) {
-                    names.get(i).setUsername(changedUsername);
-                    return Response.ok(username + " changed to " + changedUsername).build();
-                }
-            }
+@POST
+public Response createUser(
+        @FormParam("fullname") String fullname,
+        @FormParam("username") String username,
+        @FormParam("email") String email,
+        @FormParam("password") String password
+        ) {
+        Users user = new Users(fullname, username, email, password);
+            if (userManager.doesUserExist(username)) {
+                 return Response.status(Response.Status.BAD_REQUEST).entity("user už existuje").build();
+
         } else {
-            return Response.ok("User " + username + " doesn't exist!").build();
-        }
-
-        return Response.serverError().build();
-    }
-
-    @POST
-    public Response createUser(@QueryParam("username") String username, @QueryParam("password") String password) {
-        User tempUser = new User(username,password);
-        if(doesUserExist(tempUser)){
-            return Response.status(406).build();
-        } else {
-            names.add(tempUser);
-            return Response.ok("User Created").build();
-        }
-    }
-
-    public Boolean doesUserExist(User user) {
-        for (int i = 0; i < names.size(); i++) {
-            if (names.get(i).getUsername().equals(user.getUsername())) {
-                return true;
-            } else {
-                return false;
+        userManager.saveUser(user);
+        return Response.ok("Registered").build();
             }
+}
+
+@POST
+public Response loginUser(
+@FormParam("username") String username,
+@FormParam("password") String password
+        ) {
+        Users user = userManager.getUserLogin(username, password);
+        if (user == null){
+        return Response.status(Response.Status.BAD_REQUEST).entity("Error").build();
+        } else {
+        loginManager.loggedUser = user;
+        return Response.ok("Succesfuly logged in").build();
         }
-        return false;
-    }
-
-
 
 }
+
+@GET
+public Response getLoggedUser(){
+        return Response.ok(loginManager.loggedUser).build();
+        }
+@DELETE
+public Response logoutUser(){
+        loginManager.loggedUser = null;
+        return Response.ok("User logged out").build();
+        }
+        }
